@@ -6,6 +6,7 @@ var express    = require('express');
 var bodyParser = require('body-parser');
 var app        = express();
 var morgan     = require('morgan');
+var db         = require('./config/db')
 
 // configure app
 app.use(morgan('dev')); // log requests to the console
@@ -17,7 +18,7 @@ app.use(bodyParser.json());
 var port     = process.env.PORT || 8080; // set our port
 
 var mongoose   = require('mongoose');
-mongoose.connect('mongodb://node:node@novus.modulusmongo.net:27017/Iganiq8o'); // connect to our database
+mongoose.connect(db.url); // connect to our database
 var Bear     = require('./app/models/bear');
 
 // ROUTES FOR OUR API
@@ -52,7 +53,7 @@ router.route('/bears')
 			if (err)
 				res.send(err);
 
-			res.json({ message: 'Bear created!' });
+			res.json(bear);
 		});
 
 		
@@ -93,7 +94,7 @@ router.route('/bears/:bear_id')
 				if (err)
 					res.send(err);
 
-				res.json({ message: 'Bear updated!' });
+				res.json(bear);
 			});
 
 		});
